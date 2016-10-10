@@ -38,16 +38,10 @@ int main(int argc, char **argv)
 
         if (connfd <= 0)
         {
-            fprintf(stderr, "accept error\n");
+            fprintf(stderr, "accept error %s\n", strerror(errno));
             exit(1);
         }
-
-        read(connfd, request, sizeof request);
-        sscanf(request, "%d", &nbytes);
-        reply = malloc(sizeof(char) * nbytes);
-        memset(reply, 'a', nbytes);
-        write(connfd, reply, nbytes);
-        free(reply);
+        web_server(connfd);
     }
     return 0;
 }

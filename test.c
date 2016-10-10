@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <sys/time.h>
 #include <sys/resource.h>
+#include <string.h>
 
 void err_sys(const char *ptr)
 {
@@ -61,4 +62,16 @@ void pr_cpu_time(void)
     sys += (double) childusage.ru_stime.tv_sec + childusage.ru_stime.tv_usec / 1000000.0;
 
     printf("\nuser time = %g, sys time = %g\n", user, sys);
+}
+
+void web_server(int sockfd)
+{
+    char request[1024], *reply;
+    int nbytes;
+    read(sockfd, request, sizeof request);
+    sscanf(request, "%d", &nbytes);
+    reply = malloc(sizeof(char) * nbytes);
+    memset(reply, 'a', nbytes);
+    write(sockfd, reply, nbytes);
+    free(reply);
 }
